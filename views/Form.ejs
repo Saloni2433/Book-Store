@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #ffffff;
+            margin-bottom: 40px;
+            font-size: 3em;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            letter-spacing: 1px;
+        }
+
+        .book-form {
+            background: rgba(255, 255, 255, 0.98);
+            padding: 50px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            margin-bottom: 50px;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 12px;
+            color: #2d3748;
+            font-weight: 600;
+            font-size: 1em;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            background: #f8fafc;
+            color: #2d3748;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #667eea;
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+            background: #ffffff;
+        }
+
+        .form-group textarea {
+            height: 140px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 35px auto 0;
+            min-width: 220px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 35px;
+            margin-top: 50px;
+        }
+
+        .book-card {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .book-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+        }
+
+        .book-image {
+            width: 100%;
+            height: 380px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .book-card:hover .book-image {
+            transform: scale(1.08);
+        }
+
+        .book-info {
+            padding: 30px;
+            position: relative;
+        }
+
+        .book-title {
+            font-size: 1.5em;
+            color: #2d3748;
+            margin-bottom: 12px;
+            font-weight: 700;
+            line-height: 1.4;
+        }
+
+        .book-author {
+            color: #4a5568;
+            margin-bottom: 18px;
+            font-size: 1.15em;
+            font-style: italic;
+        }
+
+        .book-details {
+            color: #4a5568;
+            font-size: 1em;
+            margin-bottom: 25px;
+            line-height: 1.7;
+        }
+
+        .book-details p {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .book-details p i {
+            margin-right: 12px;
+            color: #667eea;
+            width: 20px;
+        }
+
+        .book-rating {
+            color: #f6ad55;
+            margin-bottom: 25px;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+        }
+
+        .book-rating i {
+            margin-right: 6px;
+        }
+
+        .book-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .action-btn {
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .edit-btn {
+            background: #667eea;
+            color: white;
+        }
+
+        .edit-btn:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+        }
+
+        .delete-btn {
+            background: #fc8181;
+            color: white;
+        }
+
+        .delete-btn:hover {
+            background: #f56565;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .book-form {
+                padding: 30px;
+            }
+
+            h1 {
+                font-size: 2.5em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Book Store</h1>
+
+        <div class="book-form">
+            <form action="/insertData" method="post" enctype="multipart/form-data">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="title">Book Title</label>
+                        <input type="text" id="title" name="title" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="author">Author</label>
+                        <input type="text" id="author" name="author" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="isbn">ISBN</label>
+                        <input type="text" id="isbn" name="isbn" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="publishDate">Publishing Date</label>
+                        <input type="date" id="publishDate" name="publishDate" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="price">Price</label>
+                        <input type="number" id="price" name="price" step="0.01" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="rating">Rating (0-5)</label>
+                        <input type="number" id="rating" name="rating" min="0" max="5" step="0.1" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="genre">Genre</label>
+                        <select id="genre" name="genre" required>
+                            <option value="">Select Genre</option>
+                            <option value="Fiction">Fiction</option>
+                            <option value="Non-Fiction">Non-Fiction</option>
+                            <option value="Mystery">Mystery</option>
+                            <option value="Science Fiction">Science Fiction</option>
+                            <option value="Romance">Romance</option>
+                            <option value="Biography">Biography</option>
+                            <option value="History">History</option>
+                            <option value="Self-Help">Self-Help</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="language">Language</label>
+                        <select id="language" name="language" required>
+                            <option value="">Select Language</option>
+                            <option value="English">English</option>
+                            <option value="Spanish">Spanish</option>
+                            <option value="French">French</option>
+                            <option value="German">German</option>
+                            <option value="Chinese">Chinese</option>
+                            <option value="Japanese">Japanese</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pageCount">Page Count</label>
+                        <input type="number" id="pageCount" name="pageCount" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="image">Book Cover Image</label>
+                        <input type="file" id="image" name="image" accept="image/*" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" required></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">Add Book</button>
+            </form>
+        </div>
+
+        <div class="books-grid">
+            <% books.forEach(book=> { %>
+                <div class="book-card">
+                    <img src="<%= book.image %>" alt="<%= book.title %>" class="book-image">
+                    <div class="book-info">
+                        <h3 class="book-title">
+                            <%= book.title %>
+                        </h3>
+                        <p class="book-author">By <%= book.author %>
+                        </p>
+                        <div class="book-details">
+                            <p><i class="fas fa-barcode"></i> ISBN: <%= book.isbn %>
+                            </p>
+                            <p><i class="fas fa-calendar"></i> Published: <%= new
+                                    Date(book.publishDate).toLocaleDateString() %>
+                            </p>
+                            <p><i class="fas fa-book"></i> Genre: <%= book.genre %>
+                            </p>
+                            <p><i class="fas fa-file-alt"></i> Pages: <%= book.pageCount %>
+                            </p>
+                            <p><i class="fas fa-language"></i> Language: <%= book.language %>
+                            </p>
+                            <p><i class="fas fa-tag"></i> Price: $<%= book.price %>
+                            </p>
+                        </div>
+                        <div class="book-rating">
+                            <i class="fas fa-star"></i> Rating: <%= book.rating %>/5
+                        </div>
+                        <div class="book-actions">
+                            <a href="/updateData?id=<%= book._id %>" class="action-btn edit-btn">
+                                <i class="fas fa-edit"></i> Update
+                            </a>
+                            <a href="/deleteData/<%= book._id %>" class="action-btn delete-btn">
+                                <i class="fas fa-trash"></i> Delete
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <% }); %>
+        </div>
+    </div>
+</body>
+
+</html>

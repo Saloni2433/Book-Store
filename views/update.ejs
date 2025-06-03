@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Book</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 40px;
+            font-size: 2.8em;
+            font-weight: 600;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .book-form {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 50px;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            color: #2c3e50;
+            font-weight: 500;
+            font-size: 0.95em;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #4CAF50;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+            background: #fff;
+        }
+
+        .form-group textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 30px auto 0;
+            min-width: 200px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .current-image {
+            margin-top: 15px;
+            max-width: 200px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .current-image:hover {
+            transform: scale(1.05);
+        }
+
+        .image-preview {
+            position: relative;
+            display: inline-block;
+        }
+
+        .image-preview::after {
+            content: 'Current Cover';
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+        }
+
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .book-form {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Update Book</h1>
+
+        <div class="book-form">
+            <form action="/insertData" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="updateId" value="<%= book._id %>">
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="title">Book Title</label>
+                        <input type="text" id="title" name="title" value="<%= book.title %>" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="author">Author</label>
+                        <input type="text" id="author" name="author" value="<%= book.author %>" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="isbn">ISBN</label>
+                        <input type="text" id="isbn" name="isbn" value="<%= book.isbn %>" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="publishDate">Publishing Date</label>
+                        <input type="date" id="publishDate" name="publishDate"
+                            value="<%= new Date(book.publishDate).toISOString().split('T')[0] %>" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="price">Price</label>
+                        <input type="number" id="price" name="price" step="0.01" value="<%= book.price %>" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="rating">Rating (0-5)</label>
+                        <input type="number" id="rating" name="rating" min="0" max="5" step="0.1"
+                            value="<%= book.rating %>" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="genre">Genre</label>
+                        <select id="genre" name="genre" required>
+                            <option value="">Select Genre</option>
+                            <option value="Fiction" <%=book.genre==='Fiction' ? 'selected' : '' %>>Fiction</option>
+                            <option value="Non-Fiction" <%=book.genre==='Non-Fiction' ? 'selected' : '' %>>Non-Fiction
+                            </option>
+                            <option value="Mystery" <%=book.genre==='Mystery' ? 'selected' : '' %>>Mystery</option>
+                            <option value="Science Fiction" <%=book.genre==='Science Fiction' ? 'selected' : '' %>
+                                >Science Fiction</option>
+                            <option value="Romance" <%=book.genre==='Romance' ? 'selected' : '' %>>Romance</option>
+                            <option value="Biography" <%=book.genre==='Biography' ? 'selected' : '' %>>Biography
+                            </option>
+                            <option value="History" <%=book.genre==='History' ? 'selected' : '' %>>History</option>
+                            <option value="Self-Help" <%=book.genre==='Self-Help' ? 'selected' : '' %>>Self-Help
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="language">Language</label>
+                        <select id="language" name="language" required>
+                            <option value="">Select Language</option>
+                            <option value="English" <%=book.language==='English' ? 'selected' : '' %>>English</option>
+                            <option value="Spanish" <%=book.language==='Spanish' ? 'selected' : '' %>>Spanish</option>
+                            <option value="French" <%=book.language==='French' ? 'selected' : '' %>>French</option>
+                            <option value="German" <%=book.language==='German' ? 'selected' : '' %>>German</option>
+                            <option value="Chinese" <%=book.language==='Chinese' ? 'selected' : '' %>>Chinese</option>
+                            <option value="Japanese" <%=book.language==='Japanese' ? 'selected' : '' %>>Japanese
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pageCount">Page Count</label>
+                        <input type="number" id="pageCount" name="pageCount" value="<%= book.pageCount %>" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="image">Book Cover Image</label>
+                        <input type="file" id="image" name="image" accept="image/*">
+                        <div class="image-preview">
+                            <img src="<%= book.image %>" alt="Current cover" class="current-image">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" required><%= book.description %></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">Update Book</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
